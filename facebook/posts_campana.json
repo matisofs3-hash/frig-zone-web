@@ -1,0 +1,37 @@
+[
+  {
+    "message": "¿Tu aire prende pero no enfría?\n\nNo lo dejes andando: se fuerza el compresor y una reparación chica termina saliendo carísima.\n\nAtiendo en CABA con diagnóstico en el domicilio, garantía escrita y factura.\n\nMandame MP con tu barrio y el tipo de equipo.",
+    "link": "https://frigzone.com.ar",
+    "image": "../flyers/feed/01-urgencia.jpg"
+  },
+  {
+    "message": "Tu aire limpio consume hasta 30% menos.\n\nLa turbina y el serpentín juntan hongos y tierra. Limpiar el filtro no alcanza.\n\nHago limpieza profunda con hidro-funda: no ensucio paredes ni muebles.\n\nTurnos esta semana en CABA. Escribime por privado.",
+    "link": "https://frigzone.com.ar",
+    "image": "../flyers/feed/02-limpieza.jpg",
+    "scheduled_iso": "2026-10-26T10:00:00-03:00"
+  },
+  {
+    "message": "Instalación con vacío real.\n\nNo es soplar y cargar gas: es medir, presurizar y dejar el circuito seco.\n\nVacío con vacuómetro, presurización con nitrógeno y garantía escrita.\n\nPedí tu presupuesto por privado.",
+    "link": "https://frigzone.com.ar",
+    "image": "../flyers/feed/03-instalacion.jpg",
+    "scheduled_iso": "2026-10-28T10:00:00-03:00"
+  },
+  {
+    "message": "Cámaras de frío a medida para tu comercio.\n\nPaneles de alta densidad, evaporadores de alto rendimiento y montaje incluido.\n\nSi estás por abrir o ampliar tu local, te asesoro con el dimensionamiento.\n\nPresupuesto sin cargo. Mandame MP con el rubro y las medidas.",
+    "link": "https://frigzone.com.ar",
+    "image": "../flyers/feed/04-camaras.jpg",
+    "scheduled_iso": "2026-10-30T10:00:00-03:00"
+  },
+  {
+    "message": "¿La heladera del negocio no enfría parejo?\n\nReparo exhibidoras, vitrinas y mesadas refrigeradas. Si hay mercadería adentro, actuá rápido.\n\nAtiendo en CABA con turno coordinado y garantía escrita.\n\nMandame MP con una foto de la etiqueta del equipo.",
+    "link": "https://frigzone.com.ar",
+    "image": "../flyers/feed/05-comercio.jpg",
+    "scheduled_iso": "2026-11-02T10:00:00-03:00"
+  },
+  {
+    "message": "Plan de mantenimiento mensual para comercios.\n\nVisitas programadas, informe escrito y prioridad ante fallas. Menos urgencias, más control.\n\nSi tenés cámara, heladeras o aire central, armamos un plan a tu medida.\n\nEscribime por privado.",
+    "link": "https://frigzone.com.ar",
+    "image": "../flyers/feed/06-mantenimiento.jpg",
+    "scheduled_iso": "2026-11-04T10:00:00-03:00"
+  }
+]

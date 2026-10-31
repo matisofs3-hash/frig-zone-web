@@ -1,0 +1,15 @@
+{
+  "name": "Frig Zone — Refrigeración y Climatización",
+  "short_name": "Frig Zone",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#060c16",
+  "theme_color": "#060c16",
+  "icons": [
+    {
+      "src": "assets/img/snowflake.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}
