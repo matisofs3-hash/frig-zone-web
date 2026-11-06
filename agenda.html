@@ -1,0 +1,1290 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel de Gestión y Agenda · Frig Zone</title>
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <style>
+    /* Estilos específicos del Dashboard CRM */
+    .admin-body {
+      background-color: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .admin-header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--line);
+      padding: 1rem 1.5rem;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .admin-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-weight: 700;
+      font-size: 1.2rem;
+    }
+    .admin-brand span { color: var(--cyan); }
+    .badge-demo {
+      font-size: 0.75rem;
+      background: rgba(34, 211, 238, 0.15);
+      color: var(--cyan);
+      border: 1px solid var(--cyan-2);
+      padding: 0.2rem 0.6rem;
+      border-radius: 999px;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+    .admin-nav {
+      display: flex;
+      gap: 0.5rem;
+      background: var(--bg-2);
+      padding: 0.3rem;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--line);
+    }
+    .nav-btn {
+      background: transparent;
+      border: none;
+      color: var(--muted);
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .nav-btn.active {
+      background: var(--surface-2);
+      color: var(--cyan);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+    .nav-btn:hover:not(.active) {
+      color: var(--text);
+    }
+    .admin-actions {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+    .btn-action {
+      background: var(--cyan);
+      color: #060c16;
+      border: none;
+      padding: 0.55rem 1rem;
+      border-radius: var(--radius-sm);
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: filter 0.2s;
+    }
+    .btn-action:hover { filter: brightness(1.1); }
+    .btn-secondary {
+      background: var(--surface-2);
+      color: var(--text);
+      border: 1px solid var(--line);
+      padding: 0.55rem 0.9rem;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .btn-secondary:hover { border-color: var(--cyan); color: var(--cyan); }
+
+    /* Layout principal */
+    .admin-container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 1.5rem;
+      width: 100%;
+      flex: 1;
+    }
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .kpi-card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-sm);
+      padding: 1.25rem;
+      position: relative;
+    }
+    .kpi-title { font-size: 0.85rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; }
+    .kpi-value { font-size: 1.8rem; font-weight: 800; margin: 0.4rem 0 0.2rem; color: var(--text); }
+    .kpi-sub { font-size: 0.8rem; color: var(--muted-2); }
+
+    /* Filtros y barras de herramientas */
+    .toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.25rem;
+      flex-wrap: wrap;
+    }
+    .filter-group {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+    .filter-chip {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      color: var(--muted);
+      padding: 0.4rem 0.8rem;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .filter-chip.active, .filter-chip:hover {
+      background: var(--surface-2);
+      border-color: var(--cyan);
+      color: var(--cyan);
+    }
+    .search-input {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      color: var(--text);
+      padding: 0.5rem 1rem;
+      border-radius: var(--radius-sm);
+      min-width: 260px;
+    }
+    .search-input:focus {
+      outline: none;
+      border-color: var(--cyan);
+    }
+
+    /* Listas y tarjetas de Visitas */
+    .visits-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+      gap: 1rem;
+    }
+    .visit-card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      transition: transform 0.15s, border-color 0.15s;
+    }
+    .visit-card:hover {
+      border-color: var(--cyan-2);
+      transform: translateY(-2px);
+    }
+    .visit-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 0.8rem;
+    }
+    .visit-time {
+      font-weight: 700;
+      color: var(--cyan);
+      font-size: 1.05rem;
+    }
+    .visit-date {
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+    .status-badge {
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.25rem 0.6rem;
+      border-radius: 6px;
+      text-transform: uppercase;
+    }
+    .status-pendiente { background: rgba(245, 158, 11, 0.15); color: var(--amber); border: 1px solid rgba(245, 158, 11, 0.3); }
+    .status-confirmada { background: rgba(14, 165, 233, 0.15); color: var(--blue); border: 1px solid rgba(14, 165, 233, 0.3); }
+    .status-en_camino { background: rgba(34, 211, 238, 0.2); color: var(--cyan); border: 1px solid var(--cyan); }
+    .status-realizada { background: rgba(34, 197, 94, 0.15); color: var(--green); border: 1px solid rgba(34, 197, 94, 0.3); }
+    .status-cancelada { background: rgba(239, 68, 68, 0.15); color: var(--red); border: 1px solid rgba(239, 68, 68, 0.3); }
+
+    .visit-client {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 0.3rem;
+      color: var(--text);
+    }
+    .visit-detail {
+      font-size: 0.9rem;
+      color: var(--muted);
+      margin-bottom: 0.4rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .visit-equip {
+      background: var(--bg-2);
+      border: 1px solid var(--line-soft);
+      padding: 0.5rem 0.75rem;
+      border-radius: var(--radius-sm);
+      font-size: 0.85rem;
+      margin: 0.6rem 0;
+    }
+    .visit-notes {
+      font-size: 0.85rem;
+      color: var(--muted-2);
+      font-style: italic;
+      margin-bottom: 0.8rem;
+    }
+    .visit-actions {
+      display: flex;
+      gap: 0.4rem;
+      flex-wrap: wrap;
+      margin-top: 0.8rem;
+      padding-top: 0.8rem;
+      border-top: 1px solid var(--line-soft);
+    }
+    .btn-wa {
+      background: #25D366;
+      color: #060c16;
+      font-weight: 700;
+      font-size: 0.8rem;
+      padding: 0.4rem 0.75rem;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      text-decoration: none;
+    }
+    .btn-wa:hover { filter: brightness(1.1); }
+    .btn-map {
+      background: var(--surface-2);
+      color: var(--text);
+      font-size: 0.8rem;
+      padding: 0.4rem 0.75rem;
+      border-radius: 6px;
+      border: 1px solid var(--line);
+      cursor: pointer;
+      text-decoration: none;
+    }
+    .btn-map:hover { border-color: var(--cyan); }
+
+    /* Tabla de Clientes */
+    .table-container {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      overflow-x: auto;
+    }
+    .crm-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.95rem;
+    }
+    .crm-table th {
+      background: var(--surface-2);
+      padding: 0.9rem 1rem;
+      font-weight: 700;
+      color: var(--muted);
+      border-bottom: 1px solid var(--line);
+    }
+    .crm-table td {
+      padding: 0.9rem 1rem;
+      border-bottom: 1px solid var(--line-soft);
+    }
+    .crm-table tr:hover td {
+      background: rgba(34, 211, 238, 0.03);
+    }
+
+    /* Modales */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      z-index: 1000;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s;
+    }
+    .modal-overlay.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .modal-card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      max-width: 580px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 1.5rem;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8);
+    }
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.25rem;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.8rem;
+    }
+    .modal-title { font-size: 1.25rem; font-weight: 700; color: var(--cyan); }
+    .btn-close {
+      background: none;
+      border: none;
+      color: var(--muted);
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+    .form-group {
+      margin-bottom: 1rem;
+    }
+    .form-label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--muted);
+      margin-bottom: 0.35rem;
+    }
+    .form-control {
+      width: 100%;
+      background: var(--bg-2);
+      border: 1px solid var(--line);
+      color: var(--text);
+      padding: 0.6rem 0.8rem;
+      border-radius: var(--radius-sm);
+      font-size: 0.95rem;
+    }
+    .form-control:focus {
+      outline: none;
+      border-color: var(--cyan);
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+    .modal-footer {
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.75rem;
+      margin-top: 1.5rem;
+      border-top: 1px solid var(--line);
+      padding-top: 1rem;
+    }
+
+    /* Notificación Toast */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: var(--surface-2);
+      border: 1px solid var(--cyan);
+      color: var(--text);
+      padding: 0.75rem 1.25rem;
+      border-radius: var(--radius-sm);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+      z-index: 2000;
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  </style>
+</head>
+<body class="admin-body">
+
+  <!-- Header Superior -->
+  <header class="admin-header">
+    <div class="admin-brand">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--cyan)"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+      <span>Frig Zone</span> Gestión
+      <span class="badge-demo" title="Datos guardados localmente. Listo para sincronizar con base de datos en nube.">Modo Demo Local</span>
+    </div>
+
+    <!-- Navegación de Pestañas -->
+    <nav class="admin-nav">
+      <button class="nav-btn active" onclick="switchTab('agenda')">
+        📅 Agenda & Visitas
+      </button>
+      <button class="nav-btn" onclick="switchTab('clientes')">
+        👥 Clientes CRM
+      </button>
+      <button class="nav-btn" onclick="switchTab('ajustes')">
+        ⚙️ Backup / BD
+      </button>
+    </nav>
+
+    <!-- Botones de Acción Global -->
+    <div class="admin-actions">
+      <a href="pedir-visita.html" target="_blank" class="btn-secondary" title="Probar el formulario que ven los clientes">
+        📝 Formulario Clientes
+      </a>
+      <button class="btn-action" onclick="openNewVisitModal()">
+        + Agendar Visita
+      </button>
+      <a href="index.html" class="btn-secondary" title="Volver al sitio web principal">
+        🌐 Ver Web
+      </a>
+    </div>
+  </header>
+
+  <!-- Contenedor Principal -->
+  <main class="admin-container">
+
+    <!-- KPI / Métricas Rápidas -->
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-title">Visitas para Hoy</div>
+        <div class="kpi-value" id="kpi-today">0</div>
+        <div class="kpi-sub" id="kpi-today-sub">Pendientes del día</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-title">Próximas Visitas</div>
+        <div class="kpi-value" id="kpi-pending">0</div>
+        <div class="kpi-sub">En los próximos 7 días</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-title">Clientes Registrados</div>
+        <div class="kpi-value" id="kpi-clients">0</div>
+        <div class="kpi-sub">En base de datos</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-title">Trabajos del Mes</div>
+        <div class="kpi-value" id="kpi-completed">0</div>
+        <div class="kpi-sub" style="color:var(--green)">Realizados con éxito</div>
+      </div>
+    </div>
+
+    <!-- SECCIÓN 1: AGENDA DE VISITAS -->
+    <section id="tab-agenda">
+      <div class="toolbar">
+        <div class="filter-group">
+          <button class="filter-chip active" onclick="filterVisits('todas', this)">Todas</button>
+          <button class="filter-chip" onclick="filterVisits('hoy', this)">Hoy</button>
+          <button class="filter-chip" onclick="filterVisits('semana', this)">Esta Semana</button>
+          <button class="filter-chip" onclick="filterVisits('pendientes', this)">Pendientes / En Curso</button>
+          <button class="filter-chip" onclick="filterVisits('realizadas', this)">Realizadas</button>
+        </div>
+        <input type="text" class="search-input" id="search-visits" placeholder="Buscar por cliente, barrio o equipo..." oninput="renderVisits()">
+      </div>
+
+      <div class="visits-grid" id="visits-list">
+        <!-- Renderizado dinámico desde JS -->
+      </div>
+    </section>
+
+    <!-- SECCIÓN 2: CLIENTES CRM -->
+    <section id="tab-clientes" style="display: none;">
+      <div class="toolbar">
+        <div class="filter-group">
+          <button class="btn-action" onclick="openNewClientModal()">+ Nuevo Cliente</button>
+        </div>
+        <input type="text" class="search-input" id="search-clients" placeholder="Buscar cliente por nombre, WhatsApp o barrio..." oninput="renderClients()">
+      </div>
+
+      <div class="table-container">
+        <table class="crm-table">
+          <thead>
+            <tr>
+              <th>Cliente</th>
+              <th>WhatsApp / Teléfono</th>
+              <th>Zona / Dirección</th>
+              <th>Equipo / Instalación</th>
+              <th>Historial</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="clients-table-body">
+            <!-- Renderizado dinámico desde JS -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- SECCIÓN 3: BACKUP / BASE DE DATOS -->
+    <section id="tab-ajustes" style="display: none;">
+      <div style="background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:2rem; max-width:700px; margin:0 auto;">
+        <h2 style="color:var(--cyan); margin-bottom:1rem;">Base de Datos & Sincronización</h2>
+        <p style="color:var(--muted); margin-bottom:1.5rem; line-height:1.6;">
+          Actualmente el sistema funciona en modo <strong>Local Offline</strong> (los datos se guardan en el navegador de este equipo).
+          Toda la arquitectura del código ya está estructurada con el módulo <code>CRM_API</code> para conectar una base de datos gratuita en la nube (como <strong>Supabase</strong> o <strong>Firebase</strong>) cuando quieras sincronizar con tu celular.
+        </p>
+
+        <h3 style="font-size:1.05rem; margin-bottom:0.75rem;">Respaldos manuales:</h3>
+        <div style="display:flex; gap:0.75rem; flex-wrap:wrap; margin-bottom:2rem;">
+          <button class="btn-action" onclick="exportBackup()">📥 Descargar Backup (JSON)</button>
+          <label class="btn-secondary" style="cursor:pointer;">
+            📤 Restaurar Backup <input type="file" id="import-file" accept=".json" style="display:none;" onchange="importBackup(event)">
+          </label>
+          <button class="btn-secondary" onclick="resetDemoData()" style="color:var(--amber);">🔄 Reiniciar Datos Demo</button>
+        </div>
+
+        <div style="border-top:1px solid var(--line); padding-top:1.5rem;">
+          <h4 style="font-size:0.95rem; color:var(--cyan); margin-bottom:0.5rem;">Próximo paso a producción:</h4>
+          <p style="font-size:0.85rem; color:var(--muted-2);">
+            Solo hará falta agregar las credenciales de tu proyecto gratuito de Supabase en <code>CRM_API</code> para que cada cambio impacte en tiempo real en la nube.
+          </p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- MODAL: AGENDAR / EDITAR VISITA -->
+  <div class="modal-overlay" id="modal-visit">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 class="modal-title" id="modal-visit-title">Agendar Nueva Visita</h3>
+        <button class="btn-close" onclick="closeModal('modal-visit')">&times;</button>
+      </div>
+      <form id="form-visit" onsubmit="handleSaveVisit(event)">
+        <input type="hidden" id="visit-id">
+
+        <div class="form-group">
+          <label class="form-label">Cliente *</label>
+          <div style="display:flex; gap:0.5rem;">
+            <select class="form-control" id="visit-client-id" required onchange="onSelectClientForVisit()">
+              <!-- Opciones dinámicas -->
+            </select>
+            <button type="button" class="btn-secondary" onclick="openNewClientModal(true)">+ Crear</button>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Fecha *</label>
+            <input type="date" class="form-control" id="visit-date" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Horario / Franja *</label>
+            <input type="text" class="form-control" id="visit-time" placeholder="Ej: 10:00 hs o 14 a 16 hs" required>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Tipo de Servicio *</label>
+            <select class="form-control" id="visit-service" required>
+              <option value="Diagnóstico y Urgencia">Diagnóstico y Urgencia</option>
+              <option value="Instalación Split / Aire">Instalación Split / Aire</option>
+              <option value="Service Aire Inverter">Service Aire Inverter</option>
+              <option value="Limpieza Profunda con Hidro-funda">Limpieza Profunda con Hidro-funda</option>
+              <option value="Reparación Heladera Comercial">Reparación Heladera Comercial</option>
+              <option value="Cámara Frigorífica">Cámara Frigorífica</option>
+              <option value="Pre-instalación en Obra">Pre-instalación en Obra</option>
+              <option value="Mantenimiento Preventivo">Mantenimiento Preventivo</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Estado</label>
+            <select class="form-control" id="visit-status">
+              <option value="pendiente">Pendiente</option>
+              <option value="confirmada">Confirmada</option>
+              <option value="en_camino">En Camino</option>
+              <option value="realizada">Realizada</option>
+              <option value="cancelada">Cancelada</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Dirección y Barrio</label>
+          <input type="text" class="form-control" id="visit-address" placeholder="Ej: Av. Santa Fe 3400, Palermo" required>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Presupuesto / Cobro ($ ARS)</label>
+            <input type="number" class="form-control" id="visit-price" placeholder="Ej: 45000">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Equipo a intervenir</label>
+            <input type="text" class="form-control" id="visit-equip" placeholder="Ej: Split BGH 3000 Inverter">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Diagnóstico previo / Síntomas / Notas</label>
+          <textarea class="form-control" id="visit-notes" rows="3" placeholder="Ej: No enfría, tira error E7. Llevar capacitor y bomba de vacío."></textarea>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn-secondary" onclick="closeModal('modal-visit')">Cancelar</button>
+          <button type="submit" class="btn-action">Guardar Visita</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: NUEVO / EDITAR CLIENTE -->
+  <div class="modal-overlay" id="modal-client">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 class="modal-title" id="modal-client-title">Nuevo Cliente</h3>
+        <button class="btn-close" onclick="closeModal('modal-client')">&times;</button>
+      </div>
+      <form id="form-client" onsubmit="handleSaveClient(event)">
+        <input type="hidden" id="client-id">
+
+        <div class="form-group">
+          <label class="form-label">Nombre y Apellido / Razón Social *</label>
+          <input type="text" class="form-control" id="client-name" placeholder="Ej: Carlos Rossi o Panadería Belgrano" required>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">WhatsApp / Teléfono *</label>
+            <input type="tel" class="form-control" id="client-phone" placeholder="Ej: 11 4455-6677" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Barrio / Zona *</label>
+            <input type="text" class="form-control" id="client-zone" placeholder="Ej: Palermo, Recoleta, Belgrano..." required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Dirección completa</label>
+          <input type="text" class="form-control" id="client-address" placeholder="Ej: Humboldt 2100, Piso 4 B">
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Tipo de Equipo habitual</label>
+            <input type="text" class="form-control" id="client-equip" placeholder="Ej: Split Frío/Calor 4500F">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Marca / Modelo</label>
+            <input type="text" class="form-control" id="client-brand" placeholder="Ej: Surrey Inverter">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Notas técnicas del cliente</label>
+          <textarea class="form-control" id="client-notes" rows="2" placeholder="Ej: Acceso difícil a la unidad exterior en balcón, timbre 4B."></textarea>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn-secondary" onclick="closeModal('modal-client')">Cancelar</button>
+          <button type="submit" class="btn-action">Guardar Cliente</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast" id="toast-msg">Operación realizada con éxito</div>
+
+  <!-- LÓGICA CRM Y GESTIÓN -->
+  <script>
+    /* =======================================================================
+       MÓDULO DE DATOS CRM (CRM_API)
+       Preparado para migrar a Supabase / Firebase fácilmente.
+       Actualmente utiliza localStorage como motor local.
+       ======================================================================= */
+    const CRM_API = {
+      KEY_CLIENTS: 'frigzone_crm_clients_v1',
+      KEY_VISITS: 'frigzone_crm_visits_v1',
+
+      async getClients() {
+        const raw = localStorage.getItem(this.KEY_CLIENTS);
+        return raw ? JSON.parse(raw) : [];
+      },
+
+      async saveClient(client) {
+        const clients = await this.getClients();
+        if (client.id) {
+          const idx = clients.findIndex(c => c.id === client.id);
+          if (idx >= 0) clients[idx] = client;
+        } else {
+          client.id = 'cli_' + Date.now();
+          client.createdAt = new Date().toISOString();
+          clients.unshift(client);
+        }
+        localStorage.setItem(this.KEY_CLIENTS, JSON.stringify(clients));
+        return client;
+      },
+
+      async deleteClient(id) {
+        let clients = await this.getClients();
+        clients = clients.filter(c => c.id !== id);
+        localStorage.setItem(this.KEY_CLIENTS, JSON.stringify(clients));
+      },
+
+      async getVisits() {
+        const raw = localStorage.getItem(this.KEY_VISITS);
+        return raw ? JSON.parse(raw) : [];
+      },
+
+      async saveVisit(visit) {
+        const visits = await this.getVisits();
+        if (visit.id) {
+          const idx = visits.findIndex(v => v.id === visit.id);
+          if (idx >= 0) visits[idx] = visit;
+        } else {
+          visit.id = 'vis_' + Date.now();
+          visit.createdAt = new Date().toISOString();
+          visits.unshift(visit);
+        }
+        // Ordenar por fecha y hora
+        visits.sort((a, b) => new Date(a.date + 'T' + (a.time.substring(0,5) || '00:00')) - new Date(b.date + 'T' + (b.time.substring(0,5) || '00:00')));
+        localStorage.setItem(this.KEY_VISITS, JSON.stringify(visits));
+        return visit;
+      },
+
+      async updateVisitStatus(id, newStatus) {
+        const visits = await this.getVisits();
+        const v = visits.find(item => item.id === id);
+        if (v) {
+          v.status = newStatus;
+          localStorage.setItem(this.KEY_VISITS, JSON.stringify(visits));
+        }
+      },
+
+      async deleteVisit(id) {
+        let visits = await this.getVisits();
+        visits = visits.filter(v => v.id !== id);
+        localStorage.setItem(this.KEY_VISITS, JSON.stringify(visits));
+      },
+
+      // Precarga de datos demo si está vacío
+      async initDemo() {
+        if (!localStorage.getItem(this.KEY_CLIENTS)) {
+          const demoClients = [
+            { id: 'cli_1', name: 'Martín Palermo', phone: '1154889900', zone: 'Palermo', address: 'Av. Libertador 2450, Piso 7', equip: 'Split 4500F', brand: 'BGH Inverter', notes: 'Equipo gotea en interior al prender', createdAt: new Date().toISOString() },
+            { id: 'cli_2', name: 'Restaurante Don Julio (Admin)', phone: '1133221100', zone: 'Palermo Soho', address: 'Guatemala 4699', equip: 'Cámara Frigorífica Media Temperatura', brand: 'BOHN / Danfoss', notes: 'Revisión periódica motor 3HP', createdAt: new Date().toISOString() },
+            { id: 'cli_3', name: 'Florencia Benítez', phone: '1166778899', zone: 'Belgrano', address: 'Juramento 1850', equip: '2x Split Inverter', brand: 'Daikin', notes: 'Limpieza profunda de turbina con hidro-funda', createdAt: new Date().toISOString() },
+            { id: 'cli_4', name: 'Fiambrería El Trébol', phone: '1122334455', zone: 'Caballito', address: 'Av. Rivadavia 5400', equip: 'Heladera Batea Comercial', brand: 'Teora', notes: 'No corta el termostato, congela evaporador', createdAt: new Date().toISOString() }
+          ];
+          localStorage.setItem(this.KEY_CLIENTS, JSON.stringify(demoClients));
+
+          const hoy = new Date().toISOString().split('T')[0];
+          const mananaObj = new Date();
+          mananaObj.setDate(mananaObj.getDate() + 1);
+          const manana = mananaObj.toISOString().split('T')[0];
+
+          const demoVisits = [
+            {
+              id: 'vis_1',
+              clientId: 'cli_1',
+              clientName: 'Martín Palermo',
+              clientPhone: '1154889900',
+              date: hoy,
+              time: '10:00 hs',
+              service: 'Service Aire Inverter',
+              address: 'Av. Libertador 2450, Piso 7 (Palermo)',
+              status: 'confirmada',
+              price: 55000,
+              equip: 'BGH Inverter 4500',
+              notes: 'Pérdida de agua por bandeja de drenaje trabada.'
+            },
+            {
+              id: 'vis_2',
+              clientId: 'cli_2',
+              clientName: 'Restaurante Don Julio (Admin)',
+              clientPhone: '1133221100',
+              date: hoy,
+              time: '15:30 hs',
+              service: 'Cámara Frigorífica',
+              address: 'Guatemala 4699 (Palermo Soho)',
+              status: 'pendiente',
+              price: 120000,
+              equip: 'Cámara Media Temp BOHN',
+              notes: 'Revisión manométrica y control de presiones de baja.'
+            },
+            {
+              id: 'vis_3',
+              clientId: 'cli_3',
+              clientName: 'Florencia Benítez',
+              clientPhone: '1166778899',
+              date: manana,
+              time: '11:00 hs',
+              service: 'Limpieza Profunda con Hidro-funda',
+              address: 'Juramento 1850 (Belgrano)',
+              status: 'pendiente',
+              price: 70000,
+              equip: '2x Daikin Inverter',
+              notes: 'Desinfección de serpentín y turbina.'
+            }
+          ];
+          localStorage.setItem(this.KEY_VISITS, JSON.stringify(demoVisits));
+        }
+      }
+    };
+
+    /* =======================================================================
+       ESTADO Y RENDERIZADO DE INTERFAZ
+       ======================================================================= */
+    let currentFilter = 'todas';
+    let returnToVisitModal = false;
+
+    async function initApp() {
+      await CRM_API.initDemo();
+      renderAll();
+    }
+
+    async function renderAll() {
+      await updateKPIs();
+      await renderVisits();
+      await renderClients();
+      await populateClientSelect();
+    }
+
+    function switchTab(tabName) {
+      document.getElementById('tab-agenda').style.display = tabName === 'agenda' ? 'block' : 'none';
+      document.getElementById('tab-clientes').style.display = tabName === 'clientes' ? 'block' : 'none';
+      document.getElementById('tab-ajustes').style.display = tabName === 'ajustes' ? 'block' : 'none';
+
+      document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+      const activeIdx = tabName === 'agenda' ? 0 : tabName === 'clientes' ? 1 : 2;
+      document.querySelectorAll('.nav-btn')[activeIdx].classList.add('active');
+    }
+
+    async function updateKPIs() {
+      const visits = await CRM_API.getVisits();
+      const clients = await CRM_API.getClients();
+      const hoy = new Date().toISOString().split('T')[0];
+
+      const todayVisits = visits.filter(v => v.date === hoy && v.status !== 'cancelada');
+      const pendingWeek = visits.filter(v => v.status === 'pendiente' || v.status === 'confirmada');
+      const completed = visits.filter(v => v.status === 'realizada');
+
+      document.getElementById('kpi-today').textContent = todayVisits.length;
+      document.getElementById('kpi-pending').textContent = pendingWeek.length;
+      document.getElementById('kpi-clients').textContent = clients.length;
+      document.getElementById('kpi-completed').textContent = completed.length;
+    }
+
+    /* FILTROS Y RENDER DE VISITAS */
+    function filterVisits(filter, btn) {
+      currentFilter = filter;
+      document.querySelectorAll('.toolbar .filter-chip').forEach(c => c.classList.remove('active'));
+      btn.classList.add('active');
+      renderVisits();
+    }
+
+    async function renderVisits() {
+      const listEl = document.getElementById('visits-list');
+      const search = (document.getElementById('search-visits').value || '').toLowerCase();
+      let visits = await CRM_API.getVisits();
+      const hoy = new Date().toISOString().split('T')[0];
+
+      // Aplicar filtros
+      if (currentFilter === 'hoy') {
+        visits = visits.filter(v => v.date === hoy);
+      } else if (currentFilter === 'pendientes') {
+        visits = visits.filter(v => v.status === 'pendiente' || v.status === 'confirmada' || v.status === 'en_camino');
+      } else if (currentFilter === 'realizadas') {
+        visits = visits.filter(v => v.status === 'realizada');
+      } else if (currentFilter === 'semana') {
+        const proximo = new Date();
+        proximo.setDate(proximo.getDate() + 7);
+        const limitStr = proximo.toISOString().split('T')[0];
+        visits = visits.filter(v => v.date >= hoy && v.date <= limitStr);
+      }
+
+      if (search) {
+        visits = visits.filter(v =>
+          (v.clientName && v.clientName.toLowerCase().includes(search)) ||
+          (v.address && v.address.toLowerCase().includes(search)) ||
+          (v.service && v.service.toLowerCase().includes(search)) ||
+          (v.equip && v.equip.toLowerCase().includes(search))
+        );
+      }
+
+      if (visits.length === 0) {
+        listEl.innerHTML = `
+          <div style="grid-column: 1/-1; text-align:center; padding:3rem; background:var(--surface); border:1px dashed var(--line); border-radius:var(--radius);">
+            <p style="color:var(--muted); font-size:1.1rem; margin-bottom:1rem;">No hay visitas con este filtro o búsqueda.</p>
+            <button class="btn-action" onclick="openNewVisitModal()">+ Agendar Nueva Visita</button>
+          </div>
+        `;
+        return;
+      }
+
+      listEl.innerHTML = visits.map(v => {
+        const cleanPhone = (v.clientPhone || '').replace(/\D/g, '');
+        const waNumber = cleanPhone.startsWith('54') ? cleanPhone : ('549' + cleanPhone);
+
+        // Mensajes precargados de WhatsApp
+        const msgConfirm = encodeURIComponent(`Hola ${v.clientName}! Te escribo de Frig Zone para confirmarte la visita técnica programada para el día ${formatDate(v.date)} a las ${v.time}. ¿Seguís disponible en ${v.address}?`);
+        const msgEnCamino = encodeURIComponent(`Hola ${v.clientName}! Te aviso que ya estoy en camino hacia tu domicilio (${v.address}). Llego en unos minutos.`);
+
+        const mapQuery = encodeURIComponent(v.address);
+
+        return `
+          <div class="visit-card">
+            <div>
+              <div class="visit-header">
+                <div>
+                  <div class="visit-time">${v.time}</div>
+                  <div class="visit-date">${formatDate(v.date)}</div>
+                </div>
+                <select class="status-badge status-${v.status}" onchange="changeVisitStatus('${v.id}', this.value)">
+                  <option value="pendiente" ${v.status==='pendiente'?'selected':''}>Pendiente</option>
+                  <option value="confirmada" ${v.status==='confirmada'?'selected':''}>Confirmada</option>
+                  <option value="en_camino" ${v.status==='en_camino'?'selected':''}>En Camino</option>
+                  <option value="realizada" ${v.status==='realizada'?'selected':''}>Realizada</option>
+                  <option value="cancelada" ${v.status==='cancelada'?'selected':''}>Cancelada</option>
+                </select>
+              </div>
+
+              <div class="visit-client">
+                ${v.clientName}
+                ${v.source === 'web' ? '<span class="badge-demo" style="background:rgba(34,211,238,0.2); border-color:var(--cyan); font-size:0.7rem; vertical-align:middle; margin-left:0.4rem;">✨ Solicitud Web</span>' : ''}
+              </div>
+              <div class="visit-detail">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                ${v.address}
+              </div>
+              <div class="visit-detail">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+                <strong>${v.service}</strong>
+              </div>
+
+              ${v.equip ? `<div class="visit-equip"><strong>Equipo:</strong> ${v.equip}</div>` : ''}
+              ${v.notes ? `<div class="visit-notes">"${v.notes}"</div>` : ''}
+              ${v.price ? `<div style="font-size:0.9rem; font-weight:700; color:var(--cyan); margin-bottom:0.5rem;">Presupuesto: $${Number(v.price).toLocaleString('es-AR')}</div>` : ''}
+            </div>
+
+            <div class="visit-actions">
+              <a href="https://wa.me/${waNumber}?text=${msgConfirm}" target="_blank" class="btn-wa" title="Enviar confirmación por WhatsApp">
+                📲 Confirmar
+              </a>
+              <a href="https://wa.me/${waNumber}?text=${msgEnCamino}" target="_blank" class="btn-wa" style="background:#0ea5e9; color:#fff;" title="Avisar que estás yendo">
+                🚗 En camino
+              </a>
+              <a href="https://www.google.com/maps/search/?api=1&query=${mapQuery}" target="_blank" class="btn-map" title="Ver en Google Maps">
+                📍 Mapa
+              </a>
+              <button class="btn-secondary" onclick="editVisit('${v.id}')" style="padding:0.4rem 0.6rem; font-size:0.8rem;">
+                ✏️ Editar
+              </button>
+              <button class="btn-secondary" onclick="deleteVisitConfirm('${v.id}')" style="padding:0.4rem 0.6rem; font-size:0.8rem; color:var(--red);">
+                🗑️
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    /* RENDER DE CLIENTES */
+    async function renderClients() {
+      const tbody = document.getElementById('clients-table-body');
+      const search = (document.getElementById('search-clients').value || '').toLowerCase();
+      let clients = await CRM_API.getClients();
+      const visits = await CRM_API.getVisits();
+
+      if (search) {
+        clients = clients.filter(c =>
+          (c.name && c.name.toLowerCase().includes(search)) ||
+          (c.phone && c.phone.includes(search)) ||
+          (c.zone && c.zone.toLowerCase().includes(search)) ||
+          (c.equip && c.equip.toLowerCase().includes(search))
+        );
+      }
+
+      if (clients.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:2rem; color:var(--muted);">No se encontraron clientes.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = clients.map(c => {
+        const clientVisits = visits.filter(v => v.clientId === c.id);
+        const cleanPhone = (c.phone || '').replace(/\D/g, '');
+        const waNumber = cleanPhone.startsWith('54') ? cleanPhone : ('549' + cleanPhone);
+
+        return `
+          <tr>
+            <td>
+              <strong>${c.name}</strong>
+              ${c.notes ? `<div style="font-size:0.8rem; color:var(--muted-2);">${c.notes}</div>` : ''}
+            </td>
+            <td>
+              <a href="https://wa.me/${waNumber}" target="_blank" style="color:var(--cyan); font-weight:600; display:inline-flex; align-items:center; gap:0.3rem;">
+                💬 ${c.phone}
+              </a>
+            </td>
+            <td>
+              <div><strong>${c.zone}</strong></div>
+              <div style="font-size:0.8rem; color:var(--muted);">${c.address || '-'}</div>
+            </td>
+            <td>
+              <div>${c.equip || '-'}</div>
+              <div style="font-size:0.8rem; color:var(--muted);">${c.brand || ''}</div>
+            </td>
+            <td>
+              <span class="badge-demo" style="font-size:0.75rem;">${clientVisits.length} visita(s)</span>
+            </td>
+            <td>
+              <div style="display:flex; gap:0.4rem;">
+                <button class="btn-action" style="padding:0.3rem 0.6rem; font-size:0.75rem;" onclick="scheduleForClient('${c.id}')">+ Turno</button>
+                <button class="btn-secondary" style="padding:0.3rem 0.6rem; font-size:0.75rem;" onclick="editClient('${c.id}')">✏️</button>
+                <button class="btn-secondary" style="padding:0.3rem 0.6rem; font-size:0.75rem; color:var(--red);" onclick="deleteClientConfirm('${c.id}')">🗑️</button>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    /* MANEJO DE FORMULARIOS Y MODALES */
+    function openModal(id) {
+      document.getElementById(id).classList.add('open');
+    }
+    function closeModal(id) {
+      document.getElementById(id).classList.remove('open');
+    }
+
+    async function populateClientSelect(selectedId = null) {
+      const select = document.getElementById('visit-client-id');
+      const clients = await CRM_API.getClients();
+      select.innerHTML = '<option value="">-- Seleccionar Cliente --</option>' +
+        clients.map(c => `<option value="${c.id}" ${c.id === selectedId ? 'selected' : ''}>${c.name} (${c.zone})</option>`).join('');
+    }
+
+    async function onSelectClientForVisit() {
+      const clientId = document.getElementById('visit-client-id').value;
+      if (!clientId) return;
+      const clients = await CRM_API.getClients();
+      const client = clients.find(c => c.id === clientId);
+      if (client) {
+        document.getElementById('visit-address').value = `${client.address || ''} (${client.zone || ''})`.trim();
+        document.getElementById('visit-equip').value = `${client.equip || ''} ${client.brand || ''}`.trim();
+      }
+    }
+
+    async function openNewVisitModal(preselectedClientId = null) {
+      document.getElementById('form-visit').reset();
+      document.getElementById('visit-id').value = '';
+      document.getElementById('modal-visit-title').textContent = 'Agendar Nueva Visita';
+
+      // Fecha de hoy por defecto
+      document.getElementById('visit-date').value = new Date().toISOString().split('T')[0];
+      document.getElementById('visit-time').value = '10:00 hs';
+
+      await populateClientSelect(preselectedClientId);
+      if (preselectedClientId) {
+        onSelectClientForVisit();
+      }
+      openModal('modal-visit');
+    }
+
+    async function editVisit(id) {
+      const visits = await CRM_API.getVisits();
+      const v = visits.find(item => item.id === id);
+      if (!v) return;
+
+      document.getElementById('visit-id').value = v.id;
+      document.getElementById('modal-visit-title').textContent = 'Editar Visita';
+      await populateClientSelect(v.clientId);
+      document.getElementById('visit-date').value = v.date;
+      document.getElementById('visit-time').value = v.time;
+      document.getElementById('visit-service').value = v.service;
+      document.getElementById('visit-status').value = v.status;
+      document.getElementById('visit-address').value = v.address;
+      document.getElementById('visit-price').value = v.price || '';
+      document.getElementById('visit-equip').value = v.equip || '';
+      document.getElementById('visit-notes').value = v.notes || '';
+
+      openModal('modal-visit');
+    }
+
+    async function handleSaveVisit(e) {
+      e.preventDefault();
+      const clientId = document.getElementById('visit-client-id').value;
+      const clients = await CRM_API.getClients();
+      const client = clients.find(c => c.id === clientId);
+
+      const visit = {
+        id: document.getElementById('visit-id').value || null,
+        clientId: clientId,
+        clientName: client ? client.name : 'Cliente',
+        clientPhone: client ? client.phone : '',
+        date: document.getElementById('visit-date').value,
+        time: document.getElementById('visit-time').value,
+        service: document.getElementById('visit-service').value,
+        status: document.getElementById('visit-status').value,
+        address: document.getElementById('visit-address').value,
+        price: document.getElementById('visit-price').value ? Number(document.getElementById('visit-price').value) : null,
+        equip: document.getElementById('visit-equip').value,
+        notes: document.getElementById('visit-notes').value
+      };
+
+      await CRM_API.saveVisit(visit);
+      closeModal('modal-visit');
+      showToast('Visita guardada correctamente');
+      renderAll();
+    }
+
+    async function changeVisitStatus(id, newStatus) {
+      await CRM_API.updateVisitStatus(id, newStatus);
+      showToast('Estado actualizado');
+      renderAll();
+    }
+
+    async function deleteVisitConfirm(id) {
+      if (confirm('¿Eliminar esta visita de la agenda?')) {
+        await CRM_API.deleteVisit(id);
+        showToast('Visita eliminada');
+        renderAll();
+      }
+    }
+
+    /* MODAL CLIENTES */
+    function openNewClientModal(fromVisitModal = false) {
+      returnToVisitModal = fromVisitModal;
+      document.getElementById('form-client').reset();
+      document.getElementById('client-id').value = '';
+      document.getElementById('modal-client-title').textContent = 'Nuevo Cliente';
+      openModal('modal-client');
+    }
+
+    async function editClient(id) {
+      const clients = await CRM_API.getClients();
+      const c = clients.find(item => item.id === id);
+      if (!c) return;
+
+      document.getElementById('client-id').value = c.id;
+      document.getElementById('modal-client-title').textContent = 'Editar Cliente';
+      document.getElementById('client-name').value = c.name;
+      document.getElementById('client-phone').value = c.phone;
+      document.getElementById('client-zone').value = c.zone;
+      document.getElementById('client-address').value = c.address || '';
+      document.getElementById('client-equip').value = c.equip || '';
+      document.getElementById('client-brand').value = c.brand || '';
+      document.getElementById('client-notes').value = c.notes || '';
+
+      openModal('modal-client');
+    }
+
+    async function handleSaveClient(e) {
+      e.preventDefault();
+      const client = {
+        id: document.getElementById('client-id').value || null,
+        name: document.getElementById('client-name').value,
+        phone: document.getElementById('client-phone').value,
+        zone: document.getElementById('client-zone').value,
+        address: document.getElementById('client-address').value,
+        equip: document.getElementById('client-equip').value,
+        brand: document.getElementById('client-brand').value,
+        notes: document.getElementById('client-notes').value
+      };
+
+      const saved = await CRM_API.saveClient(client);
+      closeModal('modal-client');
+      showToast('Cliente guardado');
+      await renderAll();
+
+      if (returnToVisitModal) {
+        returnToVisitModal = false;
+        openNewVisitModal(saved.id);
+      }
+    }
+
+    async function deleteClientConfirm(id) {
+      if (confirm('¿Eliminar este cliente? Sus visitas anteriores seguirán en la base.')) {
+        await CRM_API.deleteClient(id);
+        showToast('Cliente eliminado');
+        renderAll();
+      }
+    }
+
+    function scheduleForClient(clientId) {
+      openNewVisitModal(clientId);
+    }
+
+    /* UTILIDADES Y BACKUP */
+    async function exportBackup() {
+      const clients = await CRM_API.getClients();
+      const visits = await CRM_API.getVisits();
+      const data = { version: 1, exportedAt: new Date().toISOString(), clients, visits };
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `frigzone_backup_${new Date().toISOString().split('T')[0]}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+      showToast('Backup descargado');
+    }
+
+    function importBackup(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = async (e) => {
+        try {
+          const data = JSON.parse(e.target.result);
+          if (data.clients && data.visits) {
+            localStorage.setItem(CRM_API.KEY_CLIENTS, JSON.stringify(data.clients));
+            localStorage.setItem(CRM_API.KEY_VISITS, JSON.stringify(data.visits));
+            showToast('Datos restaurados correctamente');
+            renderAll();
+          } else {
+            alert('El archivo no tiene el formato esperado.');
+          }
+        } catch (err) {
+          alert('Error al leer el archivo JSON.');
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    async function resetDemoData() {
+      if (confirm('¿Seguro que querés reiniciar con los datos demo? Se sobreescribirán los datos locales.')) {
+        localStorage.removeItem(CRM_API.KEY_CLIENTS);
+        localStorage.removeItem(CRM_API.KEY_VISITS);
+        await CRM_API.initDemo();
+        showToast('Datos demo restaurados');
+        renderAll();
+      }
+    }
+
+    function formatDate(dateStr) {
+      if (!dateStr) return '';
+      const parts = dateStr.split('-');
+      if (parts.length === 3) return `${parts[2]}/${parts[1]}/${parts[0]}`;
+      return dateStr;
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast-msg');
+      toast.textContent = msg;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2500);
+    }
+
+    // Iniciar al cargar
+    document.addEventListener('DOMContentLoaded', initApp);
+  </script>
+</body>
+</html>

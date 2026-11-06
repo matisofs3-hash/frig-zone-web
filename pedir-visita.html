@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pedir Visita Técnica Online · Frig Zone</title>
+  <meta name="description" content="Solicitá una visita técnica para instalación, service o reparación de aire acondicionado, heladera comercial o cámara frigorífica en CABA.">
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <style>
+    .booking-wrapper {
+      max-width: 760px;
+      margin: 2.5rem auto;
+      padding: 0 1rem;
+    }
+    .booking-card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 2.5rem 2rem;
+      box-shadow: var(--shadow);
+    }
+    .booking-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .booking-header h1 {
+      font-size: 2rem;
+      color: var(--text);
+      margin-bottom: 0.5rem;
+    }
+    .booking-header h1 span { color: var(--cyan); }
+    .booking-header p {
+      color: var(--muted);
+      font-size: 1.05rem;
+    }
+    .form-section-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--cyan);
+      margin: 1.8rem 0 1rem;
+      padding-bottom: 0.4rem;
+      border-bottom: 1px solid var(--line-soft);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .form-group {
+      margin-bottom: 1.2rem;
+    }
+    .form-label {
+      display: block;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 0.4rem;
+    }
+    .form-label span.req { color: var(--cyan); }
+    .form-control {
+      width: 100%;
+      background: var(--bg-2);
+      border: 1px solid var(--line);
+      color: var(--text);
+      padding: 0.75rem 1rem;
+      border-radius: var(--radius-sm);
+      font-size: 1rem;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .form-control:focus {
+      outline: none;
+      border-color: var(--cyan);
+      box-shadow: 0 0 0 3px rgba(34, 211, 238, 0.15);
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+    @media (max-width: 600px) {
+      .form-row { grid-template-columns: 1fr; }
+      .booking-card { padding: 1.75rem 1.25rem; }
+    }
+    .service-options {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+    .radio-card {
+      background: var(--bg-2);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-sm);
+      padding: 0.9rem;
+      cursor: pointer;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      transition: all 0.2s;
+    }
+    .radio-card:hover { border-color: var(--cyan); }
+    .radio-card input { margin-top: 0.2rem; accent-color: var(--cyan); }
+    .radio-card-content strong { display: block; font-size: 0.95rem; margin-bottom: 0.2rem; color: var(--text); }
+    .radio-card-content span { font-size: 0.8rem; color: var(--muted); display: block; }
+    .btn-submit {
+      width: 100%;
+      background: linear-gradient(135deg, var(--cyan), var(--cyan-2));
+      color: #060c16;
+      border: none;
+      padding: 1.1rem;
+      border-radius: var(--radius-sm);
+      font-size: 1.15rem;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      margin-top: 2rem;
+      transition: filter 0.2s, transform 0.1s;
+    }
+    .btn-submit:hover { filter: brightness(1.1); transform: translateY(-1px); }
+    .btn-submit:active { transform: translateY(0); }
+
+    /* Pantalla de confirmación */
+    .success-box {
+      display: none;
+      text-align: center;
+      padding: 2rem 1rem;
+    }
+    .success-icon {
+      width: 72px;
+      height: 72px;
+      background: rgba(34, 197, 94, 0.15);
+      border: 2px solid var(--green);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.5rem;
+      color: var(--green);
+    }
+    .ticket-summary {
+      background: var(--bg-2);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-sm);
+      padding: 1.25rem;
+      margin: 1.5rem 0;
+      text-align: left;
+      font-size: 0.95rem;
+      line-height: 1.8;
+    }
+    .btn-wa-alert {
+      background: #25D366;
+      color: #060c16;
+      padding: 0.9rem 1.5rem;
+      border-radius: var(--radius-sm);
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 1.05rem;
+      margin-top: 1rem;
+      text-decoration: none;
+    }
+    .btn-wa-alert:hover { filter: brightness(1.1); }
+  </style>
+</head>
+<body>
+
+  <!-- Topbar simple -->
+  <div class="topbar">
+    <div class="wrap">
+      <ul class="topbar-list">
+        <li><span>Servicio Técnico en CABA</span></li>
+        <li><span>Atención personalizada</span></li>
+      </ul>
+      <a href="index.html" style="color:var(--cyan); font-weight:600;">← Volver al sitio principal</a>
+    </div>
+  </div>
+
+  <header class="site-header">
+    <div class="wrap">
+      <a class="logo" href="index.html">
+        <img src="assets/img/snowflake.svg" alt="" width="34" height="34">
+        <span class="logo-text">FRIG<span>ZONE</span><span class="logo-sub">AGENDA DE VISITAS</span></span>
+      </a>
+      <div class="header-cta">
+        <a class="btn btn-secondary btn-sm" href="admin.html">Acceso Técnico</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="booking-wrapper">
+    <div class="booking-card">
+
+      <!-- Formulario de Pedido de Visita -->
+      <div id="booking-form-container">
+        <div class="booking-header">
+          <h1>Pedí tu <span>Visita Técnica</span></h1>
+          <p>Completá el formulario para coordinar día y horario. Te confirmamos a la brevedad por WhatsApp.</p>
+        </div>
+
+        <form id="public-booking-form" onsubmit="handlePublicBooking(event)">
+
+          <!-- Sección 1: Contacto -->
+          <div class="form-section-title">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            Tus Datos de Contacto
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Nombre y Apellido <span class="req">*</span></label>
+              <input type="text" class="form-control" id="client-name" placeholder="Ej: Juan Pérez" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">WhatsApp / Celular <span class="req">*</span></label>
+              <input type="tel" class="form-control" id="client-phone" placeholder="Ej: 11 5566-7788" required>
+            </div>
+          </div>
+
+          <!-- Sección 2: Ubicación -->
+          <div class="form-section-title">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            Lugar de la Visita
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Barrio / Zona <span class="req">*</span></label>
+              <select class="form-control" id="client-zone" required>
+                <option value="">Seleccioná tu barrio</option>
+                <option value="Palermo">Palermo</option>
+                <option value="Recoleta">Recoleta</option>
+                <option value="Belgrano">Belgrano</option>
+                <option value="Caballito">Caballito</option>
+                <option value="Almagro">Almagro</option>
+                <option value="Villa Urquiza">Villa Urquiza</option>
+                <option value="Colegiales">Colegiales</option>
+                <option value="Núñez">Núñez</option>
+                <option value="Villa Crespo">Villa Crespo</option>
+                <option value="Otro Barrio CABA">Otro barrio en CABA</option>
+                <option value="GBA Norte/Oeste">Gran Buenos Aires</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Dirección (Calle, altura, piso/dpto) <span class="req">*</span></label>
+              <input type="text" class="form-control" id="client-address" placeholder="Ej: Av. Santa Fe 3400, 4° B" required>
+            </div>
+          </div>
+
+          <!-- Sección 3: Equipo y Falla -->
+          <div class="form-section-title">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+            Equipo y Servicio Solicitado
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Tipo de Equipo <span class="req">*</span></label>
+              <select class="form-control" id="client-equip" required>
+                <option value="Aire Acondicionado Split">Aire Acondicionado Split</option>
+                <option value="Aire Acondicionado Inverter">Aire Acondicionado Inverter</option>
+                <option value="Heladera Comercial / Batea">Heladera Comercial / Exhibidora</option>
+                <option value="Cámara Frigorífica">Cámara Frigorífica</option>
+                <option value="Pre-instalación en Obra">Pre-instalación en Obra</option>
+                <option value="Otro equipo">Otro equipo</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Marca aproximada (si la sabés)</label>
+              <input type="text" class="form-control" id="client-brand" placeholder="Ej: BGH, Surrey, Samsung, Daikin...">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Motivo principal <span class="req">*</span></label>
+            <div class="service-options">
+              <label class="radio-card">
+                <input type="radio" name="service" value="Diagnóstico / Urgencia (No enfría)" checked>
+                <div class="radio-card-content">
+                  <strong>🚨 No enfría / Urgencia</strong>
+                  <span>Diagnóstico in situ y presupuesto</span>
+                </div>
+              </label>
+              <label class="radio-card">
+                <input type="radio" name="service" value="Limpieza profunda con hidro-funda">
+                <div class="radio-card-content">
+                  <strong>🧼 Limpieza profunda</strong>
+                  <span>Turbina, serpentín y desinfección</span>
+                </div>
+              </label>
+              <label class="radio-card">
+                <input type="radio" name="service" value="Instalación de equipo">
+                <div class="radio-card-content">
+                  <strong>🔧 Instalación</strong>
+                  <span>Con vacío y garantía escrita</span>
+                </div>
+              </label>
+              <label class="radio-card">
+                <input type="radio" name="service" value="Service preventivo o comercial">
+                <div class="radio-card-content">
+                  <strong>📦 Comercio / Cámara</strong>
+                  <span>Mantenimiento preventivo</span>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">¿Qué síntoma o detalle tiene el equipo?</label>
+            <textarea class="form-control" id="client-notes" rows="2" placeholder="Ej: Hace un ruido raro, tira agua por adentro, hace saltar la térmica..."></textarea>
+          </div>
+
+          <!-- Sección 4: Preferencia de Fecha -->
+          <div class="form-section-title">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            Fecha y Horario Preferido
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Día sugerido <span class="req">*</span></label>
+              <input type="date" class="form-control" id="visit-date" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Franja horaria <span class="req">*</span></label>
+              <select class="form-control" id="visit-time" required>
+                <option value="Mañana (09:00 a 13:00 hs)">Mañana (09:00 a 13:00 hs)</option>
+                <option value="Tarde (13:00 a 18:00 hs)">Tarde (13:00 a 18:00 hs)</option>
+                <option value="Primer turno (09:00 hs)">Primer turno (09:00 hs)</option>
+                <option value="Urgente / Lo antes posible">Urgente (lo antes posible)</option>
+              </select>
+            </div>
+          </div>
+
+          <button type="submit" class="btn-submit">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            Confirmar y Solicitar Visita
+          </button>
+        </form>
+      </div>
+
+      <!-- Pantalla de Éxito y Notificación -->
+      <div id="booking-success" class="success-box">
+        <div class="success-icon">
+          <svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <h2 style="font-size:1.8rem; margin-bottom:0.5rem; color:var(--text);">¡Solicitud Registrada con Éxito!</h2>
+        <p style="color:var(--muted); font-size:1.05rem;">Tu visita ya ingresó a nuestro sistema técnico.</p>
+
+        <div class="ticket-summary" id="ticket-summary-content">
+          <!-- Detalle dinámico -->
+        </div>
+
+        <p style="margin-top:1.5rem; font-size:0.95rem; color:var(--text);">
+          Se abrió una ventana de WhatsApp para enviar el aviso directo a Mati. Si no se abrió automáticamente, tocá el siguiente botón:
+        </p>
+
+        <a id="btn-manual-wa" href="#" target="_blank" class="btn-wa-alert">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path fill="currentColor" stroke="none" d="M17.5 14.4c-.3-.2-1.7-.8-2-.9-.3-.1-.5-.2-.7.1-.2.3-.7.9-.9 1.1-.2.2-.3.2-.6.1-1.7-.8-2.8-1.5-3.9-3.3-.3-.5.3-.5.8-1.5.1-.2 0-.4 0-.5-.1-.2-.7-1.6-.9-2.2-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.4s1 2.8 1.2 3c.1.2 2 3.1 4.9 4.3 1.8.8 2.5.8 3.4.7.5-.1 1.7-.7 1.9-1.3.2-.7.2-1.2.2-1.3 0-.1-.2-.2-.4-.3zM12 2a10 10 0 0 0-8.6 15L2 22l5.2-1.4A10 10 0 1 0 12 2z"/></svg>
+          Enviar Notificación a Frig Zone por WhatsApp
+        </a>
+
+        <div style="margin-top:2rem;">
+          <a href="index.html" class="btn btn-secondary">Volver a la página principal</a>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <script>
+    // Configuración de fecha mínima (desde mañana o hoy)
+    const todayStr = new Date().toISOString().split('T')[0];
+    document.getElementById('visit-date').min = todayStr;
+    document.getElementById('visit-date').value = todayStr;
+
+    // Número de WhatsApp técnico de Frig Zone (Mati)
+    const MATI_WHATSAPP = '5491173719821';
+
+    function handlePublicBooking(e) {
+      e.preventDefault();
+
+      const name = document.getElementById('client-name').value.trim();
+      const phone = document.getElementById('client-phone').value.trim();
+      const zone = document.getElementById('client-zone').value;
+      const address = document.getElementById('client-address').value.trim();
+      const equip = document.getElementById('client-equip').value;
+      const brand = document.getElementById('client-brand').value.trim();
+      const notes = document.getElementById('client-notes').value.trim();
+      const date = document.getElementById('visit-date').value;
+      const time = document.getElementById('visit-time').value;
+
+      const serviceRadio = document.querySelector('input[name="service"]:checked');
+      const service = serviceRadio ? serviceRadio.value : 'Visita Técnica';
+
+      const fullAddress = `${address} (${zone})`;
+      const fullEquip = brand ? `${equip} - ${brand}` : equip;
+
+      // 1. Guardar en el sistema (CRM_API / localStorage)
+      const clientId = 'cli_' + Date.now();
+      const newClient = {
+        id: clientId,
+        name: name,
+        phone: phone,
+        zone: zone,
+        address: address,
+        equip: fullEquip,
+        notes: notes || 'Solicitud generada desde la web',
+        createdAt: new Date().toISOString()
+      };
+
+      const visitId = 'vis_' + Date.now();
+      const newVisit = {
+        id: visitId,
+        clientId: clientId,
+        clientName: name,
+        clientPhone: phone,
+        date: date,
+        time: time,
+        service: service,
+        status: 'pendiente', // queda pendiente de aprobación
+        source: 'web', // marca que vino desde la web
+        address: fullAddress,
+        equip: fullEquip,
+        notes: notes,
+        createdAt: new Date().toISOString()
+      };
+
+      // Guardado local
+      try {
+        const rawClients = localStorage.getItem('frigzone_crm_clients_v1');
+        const clients = rawClients ? JSON.parse(rawClients) : [];
+        clients.unshift(newClient);
+        localStorage.setItem('frigzone_crm_clients_v1', JSON.stringify(clients));
+
+        const rawVisits = localStorage.getItem('frigzone_crm_visits_v1');
+        const visits = rawVisits ? JSON.parse(rawVisits) : [];
+        visits.unshift(newVisit);
+        localStorage.setItem('frigzone_crm_visits_v1', JSON.stringify(visits));
+      } catch (err) {
+        console.error('Error guardando local:', err);
+      }
+
+      // 2. Generar el mensaje estructurado de WhatsApp para avisar a Mati
+      const waText =
+`❄️ *NUEVA SOLICITUD DE VISITA (WEB)*
+-----------------------------------
+👤 *Cliente:* ${name}
+📱 *Tel/WA:* ${phone}
+📍 *Zona:* ${zone}
+🏠 *Dirección:* ${address}
+🔧 *Servicio:* ${service}
+❄️ *Equipo:* ${fullEquip}
+📅 *Fecha pedida:* ${formatDate(date)}
+⏰ *Franja:* ${time}
+${notes ? `📝 *Detalle:* ${notes}\n` : ''}-----------------------------------
+_Solicitud #${visitId.slice(-4)}_`;
+
+      const waUrl = `https://wa.me/${MATI_WHATSAPP}?text=${encodeURIComponent(waText)}`;
+
+      // 3. Mostrar resumen en pantalla
+      document.getElementById('ticket-summary-content').innerHTML = `
+        <div><strong>👤 Cliente:</strong> ${name} (${phone})</div>
+        <div><strong>📍 Ubicación:</strong> ${fullAddress}</div>
+        <div><strong>🔧 Servicio:</strong> ${service}</div>
+        <div><strong>❄️ Equipo:</strong> ${fullEquip}</div>
+        <div><strong>📅 Fecha solicitada:</strong> ${formatDate(date)} — ${time}</div>
+        ${notes ? `<div><strong>📝 Detalle:</strong> "${notes}"</div>` : ''}
+      `;
+
+      document.getElementById('btn-manual-wa').href = waUrl;
+      document.getElementById('booking-form-container').style.display = 'none';
+      document.getElementById('booking-success').style.display = 'block';
+
+      // 4. Intentar disparar WhatsApp automáticamente
+      window.open(waUrl, '_blank');
+    }
+
+    function formatDate(dateStr) {
+      if (!dateStr) return '';
+      const parts = dateStr.split('-');
+      if (parts.length === 3) return `${parts[2]}/${parts[1]}/${parts[0]}`;
+      return dateStr;
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,338 @@
+# -*- coding: utf-8 -*-
+"""Datos del sitio Frig Zone."""
+
+WA = "5491173719821"
+WA_TEXT = "Hola%20Frig%20Zone,%20necesito%20una%20consulta%20t%C3%A9cnica"
+TEL = "+54 9 11 7371-9821"
+EMAIL = "contacto@frigzone.com.ar"
+SITE = "https://frigzone.com.ar"
+
+# (nombre, clase tipografica, rubro)
+MARCAS = [
+    ("Surrey", "b-cond", "Aires acondicionados"),
+    ("BGH", "b-wide", "Aires acondicionados"),
+    ("Samsung", "b-bold", "Aires y refrigeración"),
+    ("LG", "b-bold", "Aires y refrigeración"),
+    ("Midea", "b-light", "Aires acondicionados"),
+    ("Philco", "b-italic", "Aires acondicionados"),
+    ("Carrier", "b-serif", "Climatización"),
+    ("Daikin", "b-wide", "Climatización"),
+    ("Electra", "b-cond", "Aires acondicionados"),
+    ("TCL", "b-bold", "Aires acondicionados"),
+    ("Whirlpool", "b-light", "Refrigeración"),
+    ("Hisense", "b-wide", "Refrigeración"),
+    ("Panasonic", "b-serif", "Climatización"),
+    ("Mitsubishi Electric", "b-light", "Climatización"),
+    ("Toshiba", "b-wide", "Climatización"),
+    ("Fujitsu", "b-light", "Climatización"),
+    ("Gree", "b-bold", "Aires acondicionados"),
+    ("Haier", "b-wide", "Refrigeración"),
+    ("York", "b-serif", "Climatización"),
+    ("Rheem", "b-cond", "Climatización"),
+    ("Kelvinator", "b-serif", "Refrigeración"),
+    ("Frigidaire", "b-italic", "Refrigeración"),
+    ("Patrick", "b-cond", "Refrigeración comercial"),
+    ("Comershop", "b-cond", "Refrigeración comercial"),
+    ("Bitzer", "b-mono", "Compresores"),
+    ("Copeland", "b-wide", "Compresores"),
+    ("Danfoss", "b-bold", "Compresores y válvulas"),
+    ("Tecumseh", "b-serif", "Compresores"),
+    ("Maneurop", "b-mono", "Compresores"),
+    ("Arneg", "b-cond", "Muebles y cámaras"),
+    ("Costan", "b-serif", "Muebles y cámaras"),
+    ("Hussmann", "b-wide", "Refrigeración comercial"),
+]
+
+SERVICIOS = [
+    {
+        "slug": "instalacion-aire-acondicionado-caba",
+        "nombre": "Instalación de aire acondicionado",
+        "corto": "Split, multisplit, piso techo y cassette. Con vacío, presurización y garantía escrita.",
+        "icon": "wind",
+        "img": "camara-instalacion",
+        "h1": "Instalación de aire acondicionado en CABA",
+        "meta_title": "Instalación de Aire Acondicionado en CABA | Frig Zone",
+        "meta_desc": "Instalación de split y multisplit con vacío, presurización con nitrógeno y garantía escrita. Presupuesto sin cargo en CABA.",
+        "intro": "Instalamos equipos nuevos y reubicamos los que ya tenés. La diferencia está en el procedimiento: vacío medido con vacuómetro digital, presurización con nitrógeno y carga de gas por balanza. Sin atajos.",
+        "bullets": [
+            "Split, multisplit, piso techo y cassette",
+            "Balcones, terrazas y altura con arnés",
+            "Cañería de cobre normalizada y tapacinta",
+            "Prueba de fugas antes de liberar el gas",
+        ],
+        "incluye": [
+            "Visita técnica y medición del ambiente",
+            "Instalación completa con materiales normalizados",
+            "Vacío con vacuómetro y presurización con nitrógeno",
+            "Puesta en marcha, prueba de frío y explicación de uso",
+            "Garantía escrita en mano de obra",
+        ],
+        "proceso": [
+            "Coordinamos visita y revisamos el lugar, la altura y el punto eléctrico.",
+            "Presurizamos con nitrógeno y verificamos que no haya fugas.",
+            "Hacemos vacío por debajo de 500 micrones y cargamos gas por balanza.",
+            "Probamos el equipo, medimos temperaturas y te dejamos la garantía por escrito.",
+        ],
+        "precio": "Se cotiza según equipo, metros de cañería y altura. Presupuesto sin cargo.",
+        "faq": [
+            ("¿Cuánto tarda una instalación?", "Una instalación estándar de split lleva entre 3 y 5 horas. Si hay que hacer obra o cañería larga, puede llevar un día."),
+            ("¿Venden el equipo o solo lo instalan?", "Podemos instalar el equipo que compraste o conseguirte uno. Si lo comprás vos, verificamos que la capacidad sea la correcta antes de instalarlo."),
+            ("¿Qué pasa si el equipo es inverter?", "Se instala igual, pero el vacío es más crítico: cualquier humedad daña la placa. Por eso siempre medimos con vacuómetro."),
+        ],
+    },
+    {
+        "slug": "service-aire-acondicionado-inverter",
+        "nombre": "Service y reparación inverter",
+        "corto": "Diagnóstico de placas, sensores y compresores. Reparamos la falla, no cambiamos piezas a ciegas.",
+        "icon": "wrench",
+        "img": "refrigeracion-industrial",
+        "h1": "Service de aire acondicionado inverter en CABA",
+        "meta_title": "Service de Aire Inverter en CABA | Frig Zone",
+        "meta_desc": "Diagnóstico de placas, sensores y compresores inverter. Reparación con garantía escrita en CABA. Pedí turno por WhatsApp.",
+        "intro": "Cuando un inverter no arranca, el problema casi nunca es “el gas”. Leemos el código de error, medimos la placa y recién ahí decidimos qué reparar y qué cambiar.",
+        "bullets": [
+            "Lectura de códigos de error por marca",
+            "Reparación de placas y cambio de sensores",
+            "Cambio de capacitores y motocompresores",
+            "Carga de gas por balanza digital",
+        ],
+        "incluye": [
+            "Diagnóstico electrónico con instrumental",
+            "Presupuesto con detalle de repuestos",
+            "Reparación de placa o reemplazo según corresponda",
+            "Prueba de funcionamiento y medición de consumo",
+            "Garantía escrita en mano de obra",
+        ],
+        "proceso": [
+            "Nos contás marca, modelo y qué código o síntoma aparece.",
+            "Vamos con el instrumental y medimos placa, sensores y presiones.",
+            "Te explicamos qué falla y cuánto sale repararla antes de tocar nada.",
+            "Reparamos, probamos y te dejamos la garantía.",
+        ],
+        "precio": "El diagnóstico tiene un valor que se descuenta si hacés la reparación. Te lo confirmamos antes de ir.",
+        "faq": [
+            ("¿Reparan placas o solo las cambian?", "Las dos cosas. Si la placa tiene una falla puntual, la reparamos; si está quemada o no hay repuesto, te proponemos el cambio."),
+            ("¿Trabajan con todas las marcas?", "Sí: Surrey, BGH, Samsung, LG, Midea, Philco, Carrier, Daikin, Electra, TCL y otras, en On/Off e inverter."),
+            ("¿Dan garantía del repuesto?", "La garantía del repuesto la da el fabricante o distribuidor. La mano de obra tiene garantía escrita propia."),
+        ],
+    },
+    {
+        "slug": "camaras-frigorificas",
+        "nombre": "Cámaras frigoríficas a medida",
+        "corto": "Diseño y montaje para media, baja temperatura y congelados. Paneles de alta densidad.",
+        "icon": "snowflake",
+        "img": "camara-frio",
+        "h1": "Cámaras frigoríficas a medida en CABA",
+        "meta_title": "Cámaras Frigoríficas a Medida en CABA | Frig Zone",
+        "meta_desc": "Diseño y montaje de cámaras de frío para comercios. Paneles de alta densidad, evaporadores de alto rendimiento y garantía escrita.",
+        "intro": "Una cámara no es “un cuarto frío”: es un sistema. Si el panel, el evaporador y la unidad condensadora no están bien dimensionados, la cámara enfría mal, consume de más y termina costando el doble.",
+        "bullets": [
+            "Media, baja temperatura y congelados",
+            "Paneles de poliuretano inyectado de alta densidad",
+            "Evaporadores y unidades condensadoras de primera línea",
+            "Montaje modular y ampliaciones",
+        ],
+        "incluye": [
+            "Relevamiento del espacio y del producto a almacenar",
+            "Cálculo de carga térmica y dimensionamiento",
+            "Montaje de paneles, puerta, cortina y evaporador",
+            "Conexión de unidad condensadora y puesta en marcha",
+            "Capacitación de uso y garantía escrita",
+        ],
+        "proceso": [
+            "Nos contás qué vas a guardar, cuánto volumen y en qué espacio.",
+            "Calculamos la carga térmica y te pasamos la propuesta con planos.",
+            "Coordinamos el montaje para no frenar tu producción.",
+            "Probamos temperaturas, te explicamos el mantenimiento y firmamos garantía.",
+        ],
+        "precio": "Cada cámara se cotiza según medidas, temperatura y equipamiento. Presupuesto sin cargo.",
+        "faq": [
+            ("¿Cuánto tarda el montaje?", "Una cámara chica puede llevar 2 o 3 días. Una cámara grande o una ampliación, de 1 a 2 semanas. Lo definimos en la propuesta."),
+            ("¿Se puede instalar en un local en funcionamiento?", "Sí, organizamos el montaje por etapas para que no tengas que cerrar."),
+            ("¿Qué temperatura se puede alcanzar?", "Trabajamos desde +10 °C hasta -25 °C según el equipo y el uso. Para congelados profundos se dimensiona distinto."),
+        ],
+    },
+    {
+        "slug": "reparacion-heladeras-comerciales",
+        "nombre": "Heladeras comerciales",
+        "corto": "Exhibidoras, vitrinas y heladeras de trabajo. Service rápido para no perder mercadería.",
+        "icon": "box",
+        "img": "camara-productos",
+        "h1": "Reparación de heladeras comerciales en CABA",
+        "meta_title": "Reparación de Heladeras Comerciales | Frig Zone",
+        "meta_desc": "Reparación de heladeras exhibidoras y comerciales en CABA. Service rápido para no perder mercadería. Escribinos por WhatsApp.",
+        "intro": "En un comercio, una heladera que no enfría es pérdida directa. Atendemos exhibidoras, vitrinas, heladeras de trabajo y mesadas refrigeradas, con prioridad si hay mercadería en riesgo.",
+        "bullets": [
+            "Exhibidoras, vitrinas y heladeras de trabajo",
+            "Carga de gas, termostatos y motocompresores",
+            "Reparación de placas y resistencias",
+            "Prioridad si hay mercadería en riesgo",
+        ],
+        "incluye": [
+            "Diagnóstico en el local",
+            "Presupuesto con repuestos detallados",
+            "Reparación y prueba de temperatura",
+            "Recomendaciones para evitar que se repita",
+            "Garantía escrita en mano de obra",
+        ],
+        "proceso": [
+            "Nos mandás una foto de la etiqueta y contás qué pasa.",
+            "Coordinamos el turno y vamos con el instrumental.",
+            "Diagnosticamos, presupuestamos y repararnos en el mismo día si es posible.",
+            "Medimos temperatura y te dejamos el equipo probado.",
+        ],
+        "precio": "Depende de la falla y del repuesto. Te damos un rango antes de ir y el presupuesto cerrado en el local.",
+        "faq": [
+            ("¿Atienden urgencias?", "Sí, según disponibilidad de zona. Si hay mercadería en riesgo, lo priorizamos."),
+            ("¿Reparan heladeras de cualquier marca?", "Sí, trabajamos con las principales marcas comerciales."),
+        ],
+    },
+    {
+        "slug": "limpieza-profunda-aire",
+        "nombre": "Limpieza profunda y mantenimiento",
+        "corto": "Hidro-funda colectora, desinfectante bactericida y recuperación del rendimiento.",
+        "icon": "droplet",
+        "img": "equipamiento",
+        "h1": "Limpieza profunda de aire acondicionado en CABA",
+        "meta_title": "Limpieza Profunda de Aire en CABA | Frig Zone",
+        "meta_desc": "Limpieza de turbina y serpentina sin ensuciar tu casa. Elimina olor y moho, recupera rendimiento. Turnos en CABA.",
+        "intro": "Limpiar el filtro no alcanza. La turbina y el serpentín acumulan hongos, tierra y humedad, y eso te hace rendir menos el equipo y respirar aire contaminado. Lo hacemos con hidro-funda colectora: no ensuciamos paredes ni muebles.",
+        "bullets": [
+            "Turbina, serpentina y bandeja",
+            "Hidro-funda colectora sin ensuciar",
+            "Desinfectante bactericida",
+            "Revisión de drenaje y carga de gas",
+        ],
+        "incluye": [
+            "Protección del ambiente con hidro-funda",
+            "Limpieza profunda de turbina y serpentina",
+            "Desinfección y eliminación de olores",
+            "Revisión de drenaje y funcionamiento",
+            "Informe de lo que encontramos",
+        ],
+        "proceso": [
+            "Coordinamos el turno y protegemos el espacio.",
+            "Desarmamos la unidad y limpiamos con hidro-funda.",
+            "Desinfectamos, secamos y volvemos a armar.",
+            "Probamos el equipo y te contamos cómo mantenerlo.",
+        ],
+        "precio": "Se cotiza por equipo y cantidad de unidades. Presupuesto sin cargo.",
+        "faq": [
+            ("¿Cuánto tarda?", "Entre 1 y 2 horas por equipo, según el estado."),
+            ("¿Mancha la pared?", "No. Usamos hidro-funda colectora y protección perimetral."),
+            ("¿Cada cuánto se hace?", "En uso normal, una vez al año; en comercios con mucho polvo, cada 6 meses."),
+        ],
+    },
+    {
+        "slug": "pre-instalacion-obras",
+        "nombre": "Pre-instalación en obras",
+        "corto": "Cañerías, drenajes y eléctrico antes de cerrar paredes. Coordinamos con tu arquitecto.",
+        "icon": "building",
+        "img": "infraestructura",
+        "h1": "Pre-instalación de aire y frío en obras",
+        "meta_title": "Pre-instalación de Aire en Obras | Frig Zone",
+        "meta_desc": "Pre-instalación de aire y frío en obras y remodelaciones en CABA. Cañerías, drenajes y eléctrico coordinados con tu arquitecto.",
+        "intro": "La pre-instalación se hace antes de cerrar paredes. Después es romper, reparar y pagar dos veces. Trabajamos con tu arquitecto o contratista para dejar todo previsto.",
+        "bullets": [
+            "Tendido de cañerías y drenajes",
+            "Previsión eléctrica y de espacio técnico",
+            "Coordinación con arquitectos y contratistas",
+            "Obras nuevas y remodelaciones",
+        ],
+        "incluye": [
+            "Revisión de planos y definición de recorridos",
+            "Tendido de cañería de cobre y drenajes",
+            "Previsión de alimentación eléctrica",
+            "Pruebas antes del cierre de paredes",
+            "Informe para el director de obra",
+        ],
+        "proceso": [
+            "Nos pasás planos o nos encontramos en la obra.",
+            "Definimos recorridos, equipos y puntos.",
+            "Ejecutamos la pre-instalación y probamos.",
+            "Dejamos documentado para la instalación final.",
+        ],
+        "precio": "Se cotiza por punto y por metros de cañería. Presupuesto sin cargo.",
+        "faq": [
+            ("¿Trabajan con arquitectos?", "Sí, coordinamos con el director de obra y con el contratista."),
+            ("¿Pueden hacer solo la pre-instalación?", "Sí, y después hacemos la instalación final o la deja otro instalador."),
+        ],
+    },
+]
+
+ZONAS = [
+    ("palermo", "Palermo", "Departamentos, balcones y mucho alquiler. Instalaciones compactas y prolijas, con permiso de consorcio cuando hace falta."),
+    ("belgrano", "Belgrano", "Casas y PH con multisplit. Resolvemos drenajes y equipos en terrazas y jardines."),
+    ("caballito", "Caballito", "Comercios de calle y gastronomía. Cámaras de frío y heladeras comerciales con service rápido."),
+    ("almagro", "Almagro", "Edificios antiguos e instalaciones viejas. Modernizamos equipos y resolvemos cañerías existentes."),
+    ("villa-urquiza", "Villa Urquiza", "Obra nueva y casas con terraza. Pre-instalación y equipos de alta eficiencia."),
+    ("recoleta", "Recoleta", "Oficinas y consorcios. Mantenimiento programado y atención coordinada con administración."),
+]
+
+OBRAS = [
+    ("camara-frio", "Cámara de frío", "Cámara para carnicería — Caballito", "Paneles de alta densidad, cortina de PVC y evaporador suspendido."),
+    ("camara-instalacion", "Montaje", "Instalación en obra — Villa Urquiza", "Pre-instalación y montaje coordinado con el director de obra."),
+    ("camara-productos", "Conservación", "Cámara para lácteos — Palermo", "Temperatura estable y registro de prueba de estanqueidad."),
+    ("refrigeracion-industrial", "Industrial", "Central de frío — Almagro", "Unidad condensadora remota y evaporadores de alto rendimiento."),
+    ("equipamiento", "Comercial", "Equipamiento para gastronomía — Recoleta", "Mesadas refrigeradas y heladeras de trabajo."),
+    ("infraestructura", "Infraestructura", "Depósito refrigerado — Belgrano", "Sala de elaboración refrigerada y automatización de procesos."),
+]
+
+RESENAS = [
+    ("Cliente de Palermo", "Instalación de split", "Vinieron puntuales, prolijos y me explicaron todo. La instalación quedó impecable y sin ensuciar."),
+    ("Comercio de Caballito", "Cámara frigorífica", "Nos armaron la cámara en menos tiempo del previsto y con la temperatura justa. Se nota que saben."),
+    ("Consorcio de Recoleta", "Mantenimiento", "Coordinaron con la administración y dejaron informe escrito. Muy ordenados."),
+]
+
+FAQ = [
+    ("¿Atienden urgencias el mismo día?", "Sí, según disponibilidad de zona. Si hay mercadería o un equipo crítico sin frío, lo priorizamos. Escribinos con la palabra URGENTE."),
+    ("¿Qué garantía tienen los trabajos?", "Garantía escrita en mano de obra en todas las instalaciones y reparaciones. En repuestos, la cobertura es la del fabricante."),
+    ("¿Hacen factura A y B?", "Sí, facturamos a particulares y comercios, con Factura A o B según necesites."),
+    ("¿Cómo se paga?", "Efectivo, transferencia o Mercado Pago. El presupuesto se entrega por escrito y sin cargo."),
+    ("¿Trabajan con todas las marcas?", "Sí: Surrey, BGH, Samsung, LG, Midea, Philco, Carrier, Daikin, Electra, TCL y otras, en On/Off e inverter."),
+    ("¿Cuánto sale una cámara frigorífica?", "Depende de las medidas, la temperatura y el equipamiento. No hay un precio único: te pedimos los datos y te pasamos una propuesta con planos."),
+    ("¿Cada cuánto se limpia un aire?", "En uso normal, una vez al año. En comercios con mucho polvo o uso intensivo, cada 6 meses."),
+    ("¿Puedo comprar el equipo por mi cuenta?", "Sí. Antes de instalarlo verificamos que la capacidad y el tipo sean los correctos para el ambiente."),
+]
+
+GUIAS = [
+    {
+        "slug": "cada-cuanto-limpiar-aire",
+        "titulo": "¿Cada cuánto hay que limpiar el aire acondicionado?",
+        "extracto": "La respuesta corta es una vez al año. La respuesta útil depende de dónde vivís y cómo lo usás.",
+        "img": "guia-senales",
+        "fecha": "2026-10-10",
+        "cuerpo": [
+            ("Una vez al año, como base", "En un departamento con uso normal (verano e invierno), una limpieza profunda al año alcanza. Si el equipo está en un ambiente con mucho polvo, obras cerca o mascotas, conviene cada 6 meses."),
+            ("Por qué no alcanza con el filtro", "El filtro retiene polvo grueso, pero la turbina y el serpentín acumulan hongos y humedad. Eso reduce el caudal de aire, hace trabajar más al compresor y aparece el olor a humedad."),
+            ("Señales de que ya toca", "El aire sale con olor, el equipo tarda en enfriar, gotea o la factura de luz subió sin cambios de uso. Cualquiera de esas señales justifica una revisión."),
+            ("Qué incluye una limpieza profunda", "Desarme de la unidad, hidro-funda colectora, limpieza de turbina y serpentina, desinfección, revisión de drenaje y prueba de funcionamiento."),
+        ],
+    },
+    {
+        "slug": "cuanto-cuesta-camara-frigorifica",
+        "titulo": "Cuánto cuesta una cámara frigorífica y de qué depende",
+        "extracto": "No hay un precio único: depende de medidas, temperatura, paneles y equipamiento. Te explico qué mirar.",
+        "img": "guia-pilares",
+        "fecha": "2026-10-12",
+        "cuerpo": [
+            ("Los cuatro factores", "Tamaño de la cámara, temperatura de trabajo (no es lo mismo +2 °C que -25 °C), espesor y calidad del panel, y tipo de unidad condensadora."),
+            ("Por qué el barato sale caro", "Un panel fino o un evaporador chico hace que el equipo trabaje al límite. Consume más, falla antes y no mantiene temperatura en verano."),
+            ("Qué pedir en un presupuesto", "Cálculo de carga térmica, medidas, espesor de panel, marca y modelo del evaporador y de la unidad, y garantía escrita."),
+            ("Cómo se dimensiona", "Se calcula con el volumen, el producto, la temperatura de entrada y la frecuencia de apertura de puerta. No se hace “a ojo”."),
+        ],
+    },
+    {
+        "slug": "codigos-error-inverter",
+        "titulo": "Códigos de error en equipos inverter: qué significan",
+        "extracto": "Cada marca usa códigos distintos. Estos son los más comunes y qué hacer antes de llamar al técnico.",
+        "img": "guia-senales",
+        "fecha": "2026-10-15",
+        "cuerpo": [
+            ("Por qué aparecen", "El inverter se protege solo: si detecta sobrecorriente, sobretemperatura o comunicación fallida, corta y muestra un código."),
+            ("Los más comunes", "Errores de comunicación entre unidad interior y exterior, falla de sensor de temperatura, sobrecarga del compresor y protección de placa."),
+            ("Qué podés hacer", "Cortar la alimentación 5 minutos y volver a probar. Si el código vuelve, no insistas: puede empeorar la placa."),
+            ("Qué no hacer", "No cambies la placa sin diagnosticar y no cargues gas “porque sí”: en inverter, el gas de más también falla."),
+        ],
+    },
+]

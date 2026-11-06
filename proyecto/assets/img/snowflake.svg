@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Frig Zone">
+  <rect width="64" height="64" rx="15" fill="#0a1322"/>
+  <g fill="none" stroke="#22d3ee" stroke-width="3.2" stroke-linecap="round">
+    <path d="M32 11v42"/>
+    <path d="M13.6 21.5l36.8 21"/>
+    <path d="M50.4 21.5l-36.8 21"/>
+    <path d="M32 11l-4.5 4.5M32 11l4.5 4.5M32 53l-4.5-4.5M32 53l4.5-4.5"/>
+    <path d="M13.6 21.5l6.2.4M13.6 21.5l3.4-5.2M50.4 42.5l-6.2-.4M50.4 42.5l-3.4 5.2"/>
+    <path d="M50.4 21.5l-6.2.4M50.4 21.5l-3.4-5.2M13.6 42.5l6.2-.4M13.6 42.5l3.4 5.2"/>
+  </g>
+</svg>
