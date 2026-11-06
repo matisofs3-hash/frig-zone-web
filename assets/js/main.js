@@ -247,4 +247,82 @@
     dateInput.min = todayStr;
     dateInput.value = todayStr;
   }
+
+  /* ---------- Chatbot IA (Cloudflare Worker) ---------- */
+  var WORKER_ENDPOINT = "https://lively-lake-e310frigzone-bot.oscar-monzon-ia.workers.dev";
+  var chatWindow = document.getElementById("chatWindow");
+  var chatToggleBtn = document.getElementById("chatToggleBtn");
+  var chatCloseBtn = document.getElementById("chatCloseBtn");
+  var chatForm = document.getElementById("chatForm");
+  var chatInput = document.getElementById("chatInput");
+  var chatMessages = document.getElementById("chatMessages");
+  var chatHistory = [];
+
+  if (chatToggleBtn && chatWindow) {
+    chatToggleBtn.addEventListener("click", function () {
+      chatWindow.classList.toggle("open");
+      if (chatWindow.classList.contains("open") && chatInput) {
+        setTimeout(function () { chatInput.focus(); }, 150);
+      }
+    });
+  }
+
+  if (chatCloseBtn && chatWindow) {
+    chatCloseBtn.addEventListener("click", function () {
+      chatWindow.classList.remove("open");
+    });
+  }
+
+  function appendChatMessage(text, sender) {
+    if (!chatMessages) return;
+    var msgDiv = document.createElement("div");
+    msgDiv.className = "chat-msg " + (sender === "user" ? "user" : "bot");
+    msgDiv.textContent = text;
+    if (sender === "bot") {
+      var disc = document.createElement("span");
+      disc.className = "chat-disclaimer";
+      disc.textContent = "Respuesta asistida por IA técnica.";
+      msgDiv.appendChild(disc);
+    }
+    chatMessages.appendChild(msgDiv);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+  }
+
+  if (chatForm && chatInput && chatMessages) {
+    chatForm.addEventListener("submit", async function (e) {
+      e.preventDefault();
+      var userMsg = chatInput.value.trim();
+      if (!userMsg) return;
+
+      appendChatMessage(userMsg, "user");
+      chatInput.value = "";
+      chatHistory.push({ sender: "user", text: userMsg });
+
+      var loadingDiv = document.createElement("div");
+      loadingDiv.id = "botTyping";
+      loadingDiv.className = "chat-msg bot";
+      loadingDiv.textContent = "Analizando consulta...";
+      chatMessages.appendChild(loadingDiv);
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+
+      try {
+        var res = await fetch(WORKER_ENDPOINT, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message: userMsg, history: chatHistory })
+        });
+        var data = await res.json();
+        var typing = document.getElementById("botTyping");
+        if (typing) typing.remove();
+
+        var reply = data.reply || "Disculpá, no pude procesar la consulta en este momento. Por favor escribinos por WhatsApp.";
+        appendChatMessage(reply, "bot");
+        chatHistory.push({ sender: "model", text: reply });
+      } catch (err) {
+        var typing = document.getElementById("botTyping");
+        if (typing) typing.remove();
+        appendChatMessage("Hubo un error de conexión con el asistente. Podés contactarnos directamente por WhatsApp.", "bot");
+      }
+    });
+  }
 })();
